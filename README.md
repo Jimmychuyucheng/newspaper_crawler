@@ -1,7 +1,7 @@
 # AI-Powered News Crawler & Summarizer
 
 這是一個基於 Python 開發的自動化新聞爬蟲系統，能夠從主流新聞媒體（如 CNN）抓取指定主題的新聞，並結合 NLP (自然語言處理) 模型自動生成新聞摘要，最後將結果匯出為結構化報表 。
-
+網站 → 爬取連結 → 下載HTML → 清理內容 → 保存JSON → 搜索關鍵字 → AI生成摘要 → 轉Excel
 ## 核心功能
 
 * **多主題篩選**：支援美國 (us)、國際 (world)、政治 (politics)、商業 (business)、健康 (health)、環境 (environment) 與天氣 (weather) 等 7 種新聞分類 
@@ -33,3 +33,40 @@ pip install newspaper3k transformers pandas openpyxl
 
 # 執行程式
 python main.py
+```
+📋 所有使用的第三方套件
+套件	            用途
+newspaper3k	   	爬取文章連結、下載HTML、清理內容
+requests	    	HTTP請求（newspaper內部使用）
+transformers	 	AI模型管道
+pandas	        數據處理、轉DataFrame
+openpyxl	    	Excel寫入引擎
+
+
+📥 詳細的數據流向圖
+CNN網站
+    ↓
+newspaper.build() [爬取所有連結]
+    ↓
+article.download() & parse() [下載每篇HTML]
+    ↓
+cleanHtml() [去除標籤，提取標題+文本]
+    ↓
+json.dump() [保存成 newsPaperData_batch_X.json]
+    ↓
+json.load() [讀取JSON]
+    ↓
+.find(keyword) [搜尋關鍵字]
+    ↓
+summarizer(text) [用BART AI生成摘要]
+    ↓
+pd.DataFrame() [組織成表格格式]
+    ↓
+df.to_excel() [寫入 articles.xlsx]
+
+
+🎯 關鍵要點
+爬蟲：newspaper 套件負責幾乎所有爬蟲工作（連結、下載、清理）
+數據儲存：JSON作為中間格式，便於保存和後續處理
+AI摘要：首次運行會下載 ~1.6GB 的BART模型到本機快取
+Excel輸出：pandas + openpyxl 無縫轉換，生成可讀的Excel報告
