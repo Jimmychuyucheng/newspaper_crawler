@@ -1,6 +1,7 @@
 # AI-Powered News Crawler & Summarizer
 
 這是一個基於 Python 開發的自動化新聞爬蟲系統，能夠從主流新聞媒體（如 CNN）抓取指定主題的新聞，並結合 NLP (自然語言處理) 模型自動生成新聞摘要，最後將結果匯出為結構化報表 。
+
 網站 → 爬取連結 → 下載HTML → 清理內容 → 保存JSON → 搜索關鍵字 → AI生成摘要 → 轉Excel
 ## 核心功能
 
